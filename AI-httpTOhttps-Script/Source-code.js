@@ -4,7 +4,7 @@
 // @version      1.0
 // @description  将浏览器地址栏中的HTTP自动改为HTTPS，以及处理页面内的图片地址
 // @author       逍遙客
-// @match        *
+// @match        *http://*
 // @grant        none
 // ==/UserScript==
 
