@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         自动将HTTP改为HTTPS
+// @name         自动将HTTP改为HTTPS，同时处理页面内的图片地址
 // @namespace    httpstohttps.example.com
 // @version      1.0
-// @description  将浏览器地址栏中的HTTP自动改为HTTPS，以及处理页面内的资源请求，同事对于白名单内的HTTP协议的网址发出警告
+// @description  将浏览器地址栏中的HTTP自动改为HTTPS，以及处理页面内的图片地址
 // @author       逍遙客
 // @match        *
 // @grant        none
@@ -13,8 +13,14 @@
 
     // 使用正则表达式匹配的白名单
     var whitelistRegex = [
-        /http:\/\/www\.qunxs\.com\/.*/,
-        /http:\/\/www\.yck2\.com\/.*/
+        /http:\/\/www\.qunxs\.com\/.*/g,
+        /http:\/\/www\.yck2\.com\/.*/g,
+        /http:\/\/www\.guoxue\.com\/.*/g,
+        /http:\/\/www\.hnskl\.org\/.*/g,
+        /http:\/\/www\.zhexueshi\.com\/.*/g,
+        /http:\/\/.*\.gov\.cn\/.*/g,
+        /http:\/\/www\.qstheory\.cn\/.*/g,
+        
     ];
 
     // 检查当前网址是否在白名单中
@@ -41,7 +47,7 @@
 
         // 检查是否在白名单中
         if (isWhitelisted(currentUrl)) {
-            alert('当前网址使用的是不安全的HTTP协议');
+            alert('當前網站使用的是不安全的「HTTP」協定！');
             return;
         }
 
