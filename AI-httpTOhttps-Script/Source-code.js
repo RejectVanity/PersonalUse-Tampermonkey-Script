@@ -1,10 +1,9 @@
 // ==UserScript==
-// @name         自动将HTTP改为HTTPS，同时处理页面内的图片地址
+// @name         自动将HTTP改为HTTPS
 // @namespace    httpstohttps.example.com
 // @version      1.0
-// @description  将浏览器地址栏中的HTTP自动改为HTTPS，以及处理页面内的图片地址
+// @description  将浏览器地址栏中的HTTP自动改为HTTPS，以及处理页面内的资源请求，同事对于白名单内的HTTP协议的网址发出警告
 // @author       逍遙客
-// @exclude-match   http://www.yck2.com/*
 // @match        *
 // @grant        none
 // ==/UserScript==
@@ -12,24 +11,48 @@
 (function() {
     'use strict';
 
+    // 使用正则表达式匹配的白名单
+    var whitelistRegex = [
+        /http:\/\/www\.qunxs\.com\/.*/,
+        /http:\/\/www\.yck2\.com\/.*/
+    ];
+
+    // 检查当前网址是否在白名单中
+    function isWhitelisted(url) {
+        return whitelistRegex.some(function(regex) {
+            return regex.test(url);
+        });
+    }
+
     // 替换页面内的资源请求为HTTPS
-    function replaceHttpWithHttps(element) {
-        if (element.tagName === 'IMG' && element.src.startsWith('http://')) {
-            element.src = element.src.replace(/^http:/, 'https:');
-        }
-        // 可以添加更多类型的资源，如链接、脚本等，进行相应的替换
+    function replaceResourceWithHttps(elements, resourceType) {
+        elements.forEach(function(element) {
+            if (element.src && element.src.startsWith('http://')) {
+                element.src = element.src.replace(/^http:/, 'https:');
+            }
+            // 这里可以添加其他资源类型的替换逻辑，例如链接、脚本等
+        });
     }
 
     // 处理地址栏和页面内资源
     function processPage() {
+        // 获取当前网址
+        var currentUrl = window.location.href;
+
+        // 检查是否在白名单中
+        if (isWhitelisted(currentUrl)) {
+            alert('当前网址使用的是不安全的HTTP协议');
+            return;
+        }
+
         // 如果是HTTP协议，则将地址栏替换为HTTPS
         if (window.location.protocol === "http:") {
             window.location.href = window.location.href.replace(/^http:/, 'https:');
         }
 
-        // 替换页面内的资源请求为HTTPS
-        var elements = document.querySelectorAll('img'); // 可以添加其他资源类型的选择器
-        elements.forEach(replaceHttpWithHttps);
+        // 替换页面内的资源请求为HTTPS，包括图片、音频和视频
+        var elements = document.querySelectorAll('img, audio, video');
+        replaceResourceWithHttps(elements, 'resource');
     }
 
     // 监听地址栏的变化
