@@ -13,13 +13,15 @@
 
     // 使用正则表达式匹配的白名单
     var whitelistRegex = [
-        /http:\/\/www\.qunxs\.com\/.*/g,
-        /http:\/\/www\.yck2\.com\/.*/g,
-        /http:\/\/www\.guoxue\.com\/.*/g,
-        /http:\/\/www\.hnskl\.org\/.*/g,
-        /http:\/\/www\.zhexueshi\.com\/.*/g,
+        /http:\/\/(www\.)?qunxs\.com\/.*/g,
+        /http:\/\/(www\.)?yck2\.com\/.*/g,
+        /http:\/\/(www\.)?guoxue\.com\/.*/g,
+        /http:\/\/(www\.)?hnskl\.org\/.*/g,
+        /http:\/\/(www\.)?zhexueshi\.com\/.*/g,
         /http:\/\/.*\.gov\.cn\/.*/g,
-        /http:\/\/www\.qstheory\.cn\/.*/g,
+        /http:\/\/(www\.)?qstheory\.cn\/.*/g,
+        /http:\/\/m?\.?caibaojian\.com\/.*/g,
+        /http:\/\/m?\.?blog\.itpub\.net\/.*/g
         
     ];
 
